@@ -1,7 +1,7 @@
 package ru.job4j.concurrent;
 
 public class ThreadState {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Thread first = new Thread(
                 () -> System.out.println(Thread.currentThread().getName())
         );
