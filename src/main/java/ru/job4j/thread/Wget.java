@@ -17,22 +17,31 @@ public class Wget implements Runnable {
     @Override
     public void run() {
         long downloadTime;
-        File file = new File("result.xml");
+        String file = null;
+        try {
+            file = new URL(url).getPath();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        file = file.substring(file.lastIndexOf("/") + 1);
+
         try (InputStream input = new URL(url).openStream();
              OutputStream output = new FileOutputStream(file)) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead = 1;
+            int countBytes = 0;
+            downloadTime = System.currentTimeMillis();
             while ((bytesRead = input.read(dataBuffer, 0, dataBuffer.length)) != -1) {
-                downloadTime = System.nanoTime();
                 output.write(dataBuffer, 0, bytesRead);
-                long timeReference = System.nanoTime() - downloadTime;
-                System.out.println(timeReference);
-                if (1024 * 1000000 / timeReference < speed) {
-                    try {
-                        System.out.println(1024 * 1000000 / timeReference);
-                        Thread.sleep(1024 / timeReference);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                countBytes++;
+                if (countBytes == speed) {
+                    long time = System.currentTimeMillis() - downloadTime;
+                    if (time < 1000) {
+                        try {
+                            Thread.sleep(1000 - time);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -55,6 +64,9 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Uncorrected arguments");
+        }
         if (!urlValid(args[0])) {
             throw new IllegalArgumentException("The URL is not valid");
         }
