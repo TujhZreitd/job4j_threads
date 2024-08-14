@@ -33,8 +33,8 @@ public class Wget implements Runnable {
             downloadTime = System.currentTimeMillis();
             while ((bytesRead = input.read(dataBuffer, 0, dataBuffer.length)) != -1) {
                 output.write(dataBuffer, 0, bytesRead);
-                countBytes++;
-                if (countBytes == speed) {
+                countBytes += bytesRead;
+                if (countBytes >= speed) {
                     long time = System.currentTimeMillis() - downloadTime;
                     if (time < 1000) {
                         try {
@@ -42,6 +42,8 @@ public class Wget implements Runnable {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        countBytes = 0;
+                        downloadTime = System.currentTimeMillis();
                     }
                 }
             }
