@@ -3,7 +3,6 @@ package ru.job4j.synch;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 public class SingleLockList<T> implements Iterable<T> {
     private final List<T> list;
@@ -17,8 +16,7 @@ public class SingleLockList<T> implements Iterable<T> {
     }
 
     public synchronized T get(int index) {
-        Optional<T> result = Optional.ofNullable(list.get(index));
-        return result.get();
+        return list.get(index);
     }
 
     @Override
@@ -27,6 +25,6 @@ public class SingleLockList<T> implements Iterable<T> {
     }
 
     private synchronized List<T> copy(List<T> origin) {
-        return new ArrayList<>(origin.stream().toList());
+        return new ArrayList<>(origin);
     }
 }
