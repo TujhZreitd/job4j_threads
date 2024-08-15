@@ -42,9 +42,9 @@ public class Wget implements Runnable {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        countBytes = 0;
-                        downloadTime = System.currentTimeMillis();
                     }
+                    countBytes = 0;
+                    downloadTime = System.currentTimeMillis();
                 }
             }
         } catch (IOException e) {
