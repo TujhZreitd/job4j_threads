@@ -14,7 +14,11 @@ public class Producer<T> implements Runnable {
 
     public void run() {
         for (T el : addList) {
-            queue.offer(el);
+            try {
+                queue.offer(el);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 }
