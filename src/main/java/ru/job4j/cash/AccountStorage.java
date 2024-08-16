@@ -26,10 +26,12 @@ public class AccountStorage {
         boolean result = false;
         Account fromTransfer;
         Account toTransfer;
-        if (getById(fromId).isPresent() && getById(toId).isPresent()) {
-            if (accounts.get(fromId).amount() >= amount) {
-                fromTransfer = new Account(fromId, accounts.get(fromId).amount() - amount);
-                toTransfer = new Account(toId, accounts.get(toId).amount() + amount);
+        Optional<Account> firstAccountInOptinal = getById(fromId);
+        Optional<Account> secondAccountInOptinal = getById(toId);
+        if (firstAccountInOptinal.isPresent() && secondAccountInOptinal.isPresent()) {
+            if (firstAccountInOptinal.get().amount() >= amount) {
+                fromTransfer = new Account(fromId, firstAccountInOptinal.get().amount() - amount);
+                toTransfer = new Account(toId, secondAccountInOptinal.get().amount() + amount);
                 this.update(fromTransfer);
                 this.update(toTransfer);
                 result = this.update(fromTransfer) && this.update(toTransfer);
