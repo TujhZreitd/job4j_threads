@@ -12,7 +12,7 @@ public class ParallelSearch {
                         try {
                             System.out.println(queue.poll());
                         } catch (InterruptedException e) {
-                            return;
+                            Thread.currentThread().interrupt();
                         }
                     }
                 }
