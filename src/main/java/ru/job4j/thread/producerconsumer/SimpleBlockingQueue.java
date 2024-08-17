@@ -17,7 +17,7 @@ public class SimpleBlockingQueue<T> {
         this.sizeQueue = sizeQueue;
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return queue.isEmpty();
     }
 
