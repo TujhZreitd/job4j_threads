@@ -1,5 +1,6 @@
 package ru.job4j.forkjoinpool;
 
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class ParallelSearchIndex<T> extends RecursiveTask<Integer> {
@@ -38,5 +39,10 @@ public class ParallelSearchIndex<T> extends RecursiveTask<Integer> {
             }
         }
         return result;
+    }
+
+    public static <U> Integer search(ParallelSearchIndex<U> task) {
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        return forkJoinPool.invoke(task);
     }
 }
